@@ -4,3 +4,4 @@ numpy
 pystan
 streamlit
 pandas-datareader
+optuna
