@@ -1,4 +1,4 @@
-fbprophet
+prophet
 pandas
 numpy
 pystan
