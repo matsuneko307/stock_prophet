@@ -1,7 +1,6 @@
-fbprophet==0.6
-matplotlib==3.2.2
-pandas==1.0.5
+fbprophet
+pandas
 numpy
-pystan==2.19.1.1
-streamlit==0.62.1
-pandas-datareader==0.10.0
+pystan
+streamlit
+pandas-datareader
