@@ -1,12 +1,12 @@
 # 必要なライブラリをインポート
-import pandas as pd
-import numpy as np
 import datetime as dt
 
-import Prophet
+import pandas as pd
+import numpy as np
+
+from prophet import Prophet
 import optuna
 import streamlit as st
-
 from pandas_datareader import data
 
 
