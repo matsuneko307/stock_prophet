@@ -90,7 +90,7 @@ if code:
 
 
             study = optuna.create_study(direction="minimize") 
-            study.optimize(objective, n_trials=1)
+            study.optimize(objective, n_trials=40)
             
             #予測と実測との平均絶対誤差をテストデータを使って求める
             m = Prophet(**study.best_params)
