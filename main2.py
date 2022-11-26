@@ -55,8 +55,9 @@ if code:
             df = df_sourse[:forecast_start_index]
             df = df.drop(['High', 'Low', 'Open', 'Volume'], axis=1)
             df.columns = ['ds', 'y']
-            train = df[:-60]
-            test = df[-60:]
+            len_df_train = int(len(df)*0.7)
+            train = df[:len_df_train]
+            test = df[len_df_train:]
             
             #prophetで学習
             def objective(trial):
@@ -89,18 +90,18 @@ if code:
 
 
             study = optuna.create_study(direction="minimize") 
-            study.optimize(objective, n_trials=40)
+            study.optimize(objective, n_trials=1)
             
             #予測と実測との平均絶対誤差をテストデータを使って求める
             m = Prophet(**study.best_params)
             m.fit(df)
-            future = m.make_future_dataframe(periods=end_date)
+            future = m.make_future_dataframe(periods=end_date+1)
             forecast = m.predict(future)
 
             #グラフで実測値と予測値を比較するためのデータを用意
             df_plot = forecast[["ds","yhat"]]
             #予測開始日までの実測値を用意
-            df_acc = df["y"]
+            df_acc = df_sourse["Close"]
             #実測値と予測値を並べて比較するために結合
             df_plot = pd.concat([df_plot, df_acc],axis=1)
             df_plot = df_plot.set_axis(['Date','予測値', '実測値'], axis=1)
@@ -111,10 +112,17 @@ if code:
 
             #streamlit にグラフを表示
             fig = go.Figure()
-            fig.add_trace(go.Scatter(x=df_plot['Date'],
-                                    y=df_plot['実測値'],
+            fig.add_trace(go.Scatter(x=df_plot['Date'][:forecast_start_index+1],
+                                    y=df_plot['実測値'][:forecast_start_index+1],
                                     mode='lines',
                                     name='実測値',
+                                    ),
+                        )
+
+            fig.add_trace(go.Scatter(x=df_plot['Date'][forecast_start_index:],
+                                    y=df_plot['実測値'][forecast_start_index:],
+                                    mode='lines',
+                                    name='実測値(予)',
                                     ),
                         )
 
