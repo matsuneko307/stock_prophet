@@ -141,7 +141,7 @@ if code:
 
             #実測と予測の表を表示
             st.sidebar.write("グラフのデータ内容")
-            st.sidebar.dataframe(df_plot)
+            st.sidebar.dataframe(df_plot[:len(forecast)])
      
 elif code == False:
     st.title('コードを入力してください')
